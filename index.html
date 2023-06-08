@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plaintext Editor</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+  <style>
+    /* Styling for the body */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background: grey;
+    }
+
+    /* Styling for the note section */
+    .note {
+      width: 800px;
+      height: 800px;
+      background: rgb(109, 109, 109);
+      padding: 15px;
+      border-radius: 5px;
+      border: 1px solid rgb(0, 171, 194);
+    }
+
+    /* Styling for the textarea */
+    textarea {
+      border: none;
+      height: calc(30% - 40px) !important;
+      width: calc(100% - 10px) !important;
+      background: transparent;
+      color: #000000;
+      font-size: 14px;
+      font-family: 'Open Sans', sans-serif;
+      margin: 5px 0 0;
+    }
+
+    /* Styling for the footer */
+    .centered-footer {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <section class="note">
+    <textarea class="form-control" placeholder="Enter plaintext here..." id="note"></textarea><br>
+    <button class="btn btn-primary" onclick="saveNote()">Save</button>
+    <button class="btn btn-danger" onclick="clearNote()">Clear</button>
+    <div id="time"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="fixed-bottom centered-footer">
+    <p class="text-center">
+      <small>
+        <p>Developed by <a href="https://anthonyconstant.co.uk/">Anthony Constant</a></p>
+      </small>
+    </p>
+  </footer>
+
+
+  <script>
+    // Save note message
+    function saveNote() {
+      if (typeof(Storage) !== 'undefined') {
+        var noteInput = document.getElementById('note').value;
+        localStorage.setItem('note', noteInput);
+        document.getElementById('note').value = localStorage.getItem('note');
+        console.log('Note saved.');
+      } else {
+        document.getElementById('test').innerHTML = 'Sorry, your browser does not support Web Storage...';
+      }
+    }
+
+    // Clear note textarea
+    function clearNote() {
+      document.getElementById('note').value = '';
+    }
+
+    // Get the value of the note from local storage
+    document.getElementById('note').value = localStorage.getItem('note');
+
+    // Display live time function
+    function checkTime(i) {
+      if (i < 10) {
+        i = '0' + i;
+      }
+      return i;
+    }
+
+    function startTime() {
+      var today = new Date();
+      var h = today.getHours();
+      var m = today.getMinutes();
+      var s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('time').innerHTML = h + ':' + m + ':' + s;
+      t = setTimeout(function() {
+        startTime();
+      }, 500);
+    }
+
+    startTime();
+  </script>
+</body>
+</html>
+
+<!--
+  -------- www.anthonyconstantco.uk --------
+  |                                     |
+  |   </> with <3 by Anthony Constant   |
+  |                                     |
+  -------- www.anthonyconstant.co.uk --------
+-->
